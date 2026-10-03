@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Undangan Pernikahan</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f9f9f9; }
+    .container { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .form-group { margin-bottom: 15px; text-align: left; }
+    input, select, textarea { width: 100%; padding: 10px; margin-top: 5px; box-sizing: border-box; }
+    button { background-color: #d3a17e; color: white; border: none; padding: 10px 20px; cursor: pointer; width: 100%; border-radius: 5px; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Undangan Pernikahan</h2>
+    <!-- Teks sapaan tamu otomatis -->
+    <p>Kepada Yth: <br><strong id="nama-tamu" style="font-size: 1.5em; color: #d3a17e;">Tamu Undangan</strong></p>
+    
+    <p>Kami mengundang Bapak/Ibu/Saudara/i untuk hadir di hari bahagia kami.</p>
+
+    <hr style="margin: 30px 0;">
+
+    <h3>Konfirmasi Kehadiran (RSVP)</h3>
+    
+    <form id="rsvp-form" name="submit-to-google-sheet">
+      <div class="form-group">
+        <label>Nama Anda:</label>
+        <input type="text" id="nama" name="Nama Tamu" required>
+      </div>
+
+      <div class="form-group">
+        <label>Apakah Anda akan hadir?</label>
+        <select name="Kehadiran" required>
+          <option value="" disabled selected>Pilih Kehadiran</option>
+          <option value="Hadir">Hadir</option>
+          <option value="Tidak Hadir">Mohon Maaf Tidak Bisa Hadir</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Ucapan & Doa:</label>
+        <textarea name="Pesan" rows="4" required></textarea>
+      </div>
+
+      <button type="submit" id="btn-kirim">Kirim RSVP</button>
+      
+      <div id="loading" style="display:none; color: blue; margin-top: 10px;">Mengirim data...</div>
+      <div id="sukses" style="display:none; color: green; margin-top: 10px;">Terima kasih atas konfirmasi dan doanya!</div>
+    </form>
+  </div>
+
+  <script>
+    // 1. Logika untuk menangkap nama dari URL (misal: ?to=Budi)
+    const urlParams = new URLSearchParams(window.location.search);
+    const namaTamu = urlParams.get('to');
+    
+    if (namaTamu) {
+      document.getElementById('nama-tamu').innerText = namaTamu;
+      document.getElementById('nama').value = namaTamu; // Mengisi kolom nama di form secara otomatis
+    }
+
+    // 2. Logika untuk mengirim data ke Google Sheets
+    // GANTI URL DI BAWAH INI DENGAN URL WEB APP MILIK ANDA DARI TAHAP 2
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxHorD-s3XrGnd3dC6i-K2Sg5Z1gLedIY0pMkO7_2FAMLC8sS5h872y2FPPOqC43Sx8/exec';
+    
+    const form = document.forms['submit-to-google-sheet'];
+    const btnKirim = document.getElementById('btn-kirim');
+    const loading = document.getElementById('loading');
+    const sukses = document.getElementById('sukses');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      
+      btnKirim.style.display = 'none';
+      loading.style.display = 'block';
+
+      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => {
+          loading.style.display = 'none';
+          sukses.style.display = 'block';
+          form.reset();
+          setTimeout(() => { sukses.style.display = 'none'; btnKirim.style.display = 'block'; }, 5000);
+        })
+        .catch(error => {
+          loading.style.display = 'none';
+          btnKirim.style.display = 'block';
+          alert('Error! Data gagal dikirim.');
+        });
+    });
+  </script>
+</body>
+</html>
