@@ -376,23 +376,38 @@
         // ==============================================================
         const scriptURL = 'https://script.google.com/macros/s/AKfycbxHorD-s3XrGnd3dC6i-K2Sg5Z1gLedIY0pMkO7_2FAMLC8sS5h872y2FPPOqC43Sx8/exec';
         
-        // 2. LOGIKA URL PARAMETER DAN VALIDASI KEAMANAN
+        // 2. LOGIKA URL PARAMETER DAN VALIDASI KEAMANAN (VERSI KETAT)
         const urlParams = new URLSearchParams(window.location.search);
         const namaTamu = urlParams.get('to');
-        const openBtn = document.getElementById('openBtn');
         
-        if (namaTamu) {
-            // Ubah tombol jadi "Memverifikasi..." saat baru dibuka
-            openBtn.innerText = "Memverifikasi...";
-            openBtn.disabled = true;
-            openBtn.style.opacity = "0.6";
+        // Ambil elemen
+        const openBtn = document.getElementById('openBtn');
+        const guestWelcome = document.querySelector('.guest-welcome');
+        const openContent = document.querySelector('.open-content');
 
-            // Lakukan pengecekan nama ke Google Sheets
+        // LAKUKAN BLOKIR AWAL: Sembunyikan Sapaan dan Tombol secara default
+        if (guestWelcome) guestWelcome.style.display = 'none';
+        if (openBtn) openBtn.style.display = 'none';
+
+        if (namaTamu) {
+            // Tampilkan teks loading sementara
+            const loadingText = document.createElement('p');
+            loadingText.id = 'loadingText';
+            loadingText.innerHTML = '<i>Memverifikasi undangan...</i>';
+            loadingText.style.color = '#fff';
+            loadingText.style.marginTop = '20px';
+            openContent.appendChild(loadingText);
+
             fetch(scriptURL + "?name=" + encodeURIComponent(namaTamu))
                 .then(response => response.json())
                 .then(data => {
+                    // Hapus teks loading
+                    const loader = document.getElementById('loadingText');
+                    if (loader) loader.remove();
+
                     if (data.valid === true) {
-                        // JIKA NAMA VALID (Ada di Daftar Tamu)
+                        // === JIKA NAMA VALID (ADA DI SHEET) ===
+                        // Isi semua kolom nama
                         const namaCover = document.getElementById('nama-tamu-cover');
                         if (namaCover) namaCover.innerText = namaTamu;
                         
@@ -403,25 +418,34 @@
                             input.value = namaTamu;
                         });
 
-                        // Aktifkan kembali tombol Open Invitation
-                        openBtn.innerText = "Open Invitation";
-                        openBtn.disabled = false;
-                        openBtn.style.opacity = "1";
+                        // Munculkan kembali Sapaan dan Tombol Open Invitation
+                        if (guestWelcome) guestWelcome.style.display = 'block';
+                        if (openBtn) openBtn.style.display = 'inline-block';
+                        
                     } else {
-                        // JIKA NAMA TIDAK ADA (URL Diedit Sembarangan)
-                        document.querySelector('.open-content').innerHTML = `
-                            <h2>Akses Ditolak</h2>
-                            <p style="margin-top: 15px; font-size:16px; color:#fff;">Maaf, nama <b>${namaTamu}</b> tidak ditemukan dalam daftar tamu kami.</p>
-                            <p style="margin-top: 10px; font-size:14px; color:#ccc; font-style:italic;">Silakan gunakan link undangan asli yang kami berikan.</p>
+                        // === JIKA NAMA TIDAK VALID / DIKARANG ===
+                        // Hapus elemen dan tampilkan penolakan
+                        openContent.innerHTML = `
+                            <h1>WEDDING ANNOUNCEMENT</h1>
+                            <h2>Tiffany & Jared</h2>
+                            <h3 style="color:#fff; margin-top:20px; letter-spacing: 2px;">Akses Ditolak</h3>
+                            <p style="color:#ccc; margin-top:10px; font-size: 14px;">Maaf, nama <b>${namaTamu}</b> tidak terdaftar dalam tamu undangan kami.</p>
                         `;
                     }
                 })
                 .catch(error => {
-                    // Jika jaringan error/lambat, izinkan masuk agar tidak nyangkut
-                    openBtn.innerText = "Open Invitation";
-                    openBtn.disabled = false;
-                    openBtn.style.opacity = "1";
+                    // Jika error jaringan
+                    const loader = document.getElementById('loadingText');
+                    if (loader) loader.innerHTML = '<i style="color:red;">Gagal memverifikasi jaringan. Silakan refresh halaman.</i>';
                 });
+        } else {
+            // === JIKA LINK DIBUKA POLOSAN TANPA PARAMETER ?to= ===
+            openContent.innerHTML = `
+                <h1>WEDDING ANNOUNCEMENT</h1>
+                <h2>Tiffany & Jared</h2>
+                <h3 style="color:#fff; margin-top:20px; letter-spacing: 2px;">Link Tidak Lengkap</h3>
+                <p style="color:#ccc; margin-top:10px; font-size: 14px;">Silakan gunakan link undangan personal yang kami kirimkan via WhatsApp.</p>
+            `;
         }
         
         // 3. UI INTERACTIONS
