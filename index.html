@@ -1,95 +1,534 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Undangan Pernikahan</title>
-  <style>
-    body { font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f9f9f9; }
-    .container { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    .form-group { margin-bottom: 15px; text-align: left; }
-    input, select, textarea { width: 100%; padding: 10px; margin-top: 5px; box-sizing: border-box; }
-    button { background-color: #d3a17e; color: white; border: none; padding: 10px 20px; cursor: pointer; width: 100%; border-radius: 5px; font-weight: bold; }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Wedding Tiffany & Jared Wedding Announcement</title>
+    <!-- Favicon / Logo -->
+    <link rel="icon" href="asset/img/logo AY.png" type="image/png">
+    
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Georgia', serif; }
+        html, body { overflow-x: hidden; height: 100%; scroll-behavior: smooth; }
+        body { display: flex; min-height: 100vh; background-color: #fff; color: #333; }
+
+        /* LEFT SECTION */
+        .left-section { width: 71.4%; position: fixed; top: 0; left: 0; height: 100%; background: url('https://invitato.net/test-product-engineer/static/3-8ac38da1cdc0fa503b46859811696a13.jpg') no-repeat center center; background-size: cover; background-attachment: fixed; padding: 40px 60px; display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start; border-right: 10px solid rgba(0, 0, 0, 0.2); z-index: 1; }
+        .left-section::before { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, 0.45); z-index: 0; }
+        .left-section .content { position: relative; z-index: 2; }
+        .left-section h1, .left-section h2, .left-section h3, .left-section p { color: #fff; }
+        .left-section h1 { font-size: 16px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+        .left-section h2 { font-size: 42px; margin-top: 4px; }
+        .left-section p { margin-top: 20px; font-size: 18px; line-height: 1.7; font-style: italic; max-width: 500px; }
+
+        /* RIGHT SECTION */
+        .right-section { margin-left: 71.4%; width: 28.6%; background-color: #fff; overflow-y: auto; overflow-x: hidden; text-align: center; }
+
+        /* OVERLAY HEADER */
+        .overlay-header { position: relative; width: 100%; height: 100vh; overflow: hidden; }
+        .overlay-bg { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 1.5s ease; }
+        .overlay-bg.active { opacity: 1; }
+        .overlay-content { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.45); display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff; text-align: center; padding: 20px; }
+        .overlay-content h1 { position: absolute; top: 35px; left: 50%; transform: translateX(-50%); font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #ffffffcc; white-space: nowrap; }
+        .overlay-content h2 { font-size: 40px; margin: 12px 0; color: #ffd6e0; }
+        .overlay-content p { font-size: 16px; font-style: italic; color: #f8f8f8; }
+
+        /* CONTENT SECTION */
+        .content-section { padding: 40px 25px; }
+        .wedding-header { margin-bottom: 40px; }
+        .wedding-header h4 { font-size: 14px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+        .wedding-header p { font-size: 16px; color: #444; margin-bottom: 15px; }
+        .wedding-header h2 { font-size: 26px; line-height: 1.4; font-weight: bold; margin-bottom: 15px; }
+        .wedding-header span { font-style: italic; font-size: 16px; color: #555; }
+
+        /* CAROUSEL */
+        .carousel-container { position: relative; width: 100%; max-width: 420px; margin: 0 auto; height: 420px; perspective: 1000px; overflow: visible; }
+        .carousel-slide { position: absolute; top: 50%; left: 50%; width: 70%; height: 100%; opacity: 0; transform: translate(-50%, -50%) scale(0.8); transition: all 0.6s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); border-radius: 10px; overflow: hidden; }
+        .carousel-slide img { width: 100%; height: 100%; object-fit: cover; }
+        .carousel-slide.active { opacity: 1; z-index: 3; transform: translate(-50%, -50%) scale(1); }
+        .carousel-slide.prev { opacity: 0.6; z-index: 2; transform: translate(-150%, -50%) scale(0.9) rotateY(15deg); }
+        .carousel-slide.next { opacity: 0.6; z-index: 2; transform: translate(50%, -50%) scale(0.9) rotateY(-15deg); }
+        .carousel-buttons { display: flex; justify-content: flex-end; margin-top: 20px; gap: 10px; }
+        .carousel-buttons button { background: none; border: 1.5px solid #000; padding: 8px 14px; cursor: pointer; font-size: 18px; transition: 0.3s; border-radius: 4px; font-weight: bold; }
+        .carousel-buttons button:hover { background: #000; color: #fff; }
+
+        /* MEET SECTION */
+        .meet { margin-top: 60px; text-align: center; }
+        .meet h2 { font-size: 22px; letter-spacing: 1.5px; margin-bottom: 30px; text-transform: uppercase; color: #b80049; }
+        .meet-container { display: flex; flex-direction: column; align-items: center; }
+        .person { display: flex; flex-direction: column; align-items: center; max-width: 300px; }
+        .person img { width: 280px; height: 280px; object-fit: cover; filter: grayscale(100%); margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18); border-radius: 0; border: none; }
+        .bride, .groom { text-align: center; margin-bottom: 20px; }
+        .bride h3, .groom h3 { font-size: 20px; color: #333; }
+        .handle { font-style: italic; color: #b80049; font-size: 14px; margin: 6px 0; }
+        .desc { font-size: 14px; color: #666; line-height: 1.6; }
+
+        /* QUOTE & PLACE */
+        .quote { background-color: #f0f0f0; padding: 60px 25px; text-align: center; margin-top: 60px; }
+        .quote p { font-size: 18px; line-height: 1.8; color: #333; font-style: italic; max-width: 700px; margin: 0 auto 20px auto; }
+        .quote span { display: block; font-size: 16px; color: #555; margin-top: 10px; font-weight: bold; }
+        .place { background-color: #fff; padding: 40px 25px; text-align: left; max-width: 600px; margin: 0 auto 60px auto; }
+        .place h2 { font-size: 22px; color: #b80049; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1.5px; }
+        .place p { font-size: 16px; color: #333; line-height: 1.6; }
+
+        /* GIFT & STREAMING OVERLAYS */
+        .gift, .streaming { position: relative; width: 100vw; height: 250px; background-size: cover; background-position: center; filter: grayscale(100%); display: flex; justify-content: center; align-items: center; margin-left: calc(-50vw + 50%); }
+        .gift { background-image: url('https://invitato.net/test-product-engineer/static/4-3943e72cf6bb4fe685c5917ea1d1cac4.jpg'); }
+        .streaming { background-image: url('https://invitato.net/test-product-engineer/static/5-ffa38a07e15195800fbcc590cb50b2d0.jpg'); }
+        .gift-overlay, .streaming-overlay { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.45); display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff; text-align: center; padding: 20px; }
+        .gift-overlay h2, .streaming-overlay h2 { font-size: 32px; margin-bottom: 20px; letter-spacing: 2px; }
+        .gift-overlay button, .streaming-overlay button { padding: 12px 28px; font-size: 16px; color: #fff; background-color: #b80049; border: none; border-radius: 5px; cursor: pointer; transition: 0.3s; }
+        .gift-overlay button:hover, .streaming-overlay button:hover { background-color: #ff6f91; }
+
+        /* LOVE STORY */
+        .love-story { background-color: #fff; padding: 60px 25px; text-align: center; font-family: Arial, sans-serif; }
+        .love-story-header h2 { font-size: 22px; color: #b80049; margin-bottom: 10px; }
+        .love-story-header h3 { font-size: 28px; color: #333; margin-bottom: 20px; }
+        .love-story-header img { width: 300px; height: 300px; object-fit: cover; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); border-radius: 10px; }
+        .watch-video { font-size: 16px; margin-bottom: 40px; }
+        .watch-video a { color: #b80049; text-decoration: underline; font-weight: bold; transition: color 0.3s; }
+        .story-slide { display: none; text-align: center; padding: 20px; background-color: #f9f9f9; border-radius: 10px; }
+        .story-slide.active { display: block; }
+        .story-slide h4 { font-size: 16px; color: #b80049; margin-bottom: 10px; }
+        .story-slide p { font-size: 14px; color: #333; line-height: 1.6; }
+        .story-buttons { display: flex; justify-content: center; gap: 10px; margin-top: 20px; }
+        .story-buttons button { padding: 8px 16px; font-size: 14px; border: 1px solid #b80049; background: none; color: #b80049; cursor: pointer; border-radius: 4px; transition: 0.3s; }
+        .story-buttons button:hover { background-color: #b80049; color: #fff; }
+
+        /* PRAY (RSVP) */
+        .pray { background-color: #f0f0f0; padding: 60px 0; text-align: center; width: 100%; }
+        .pray h2 { font-size: 24px; color: #b80049; margin-bottom: 15px; }
+        .pray p { font-size: 16px; color: #333; margin-bottom: 30px; }
+        .pray-form { display: flex; flex-direction: column; align-items: center; max-width: 500px; margin: 0 auto; gap: 15px; width: 90%; }
+        .pray-form input, .pray-form textarea { width: 100%; padding: 12px 15px; font-size: 14px; border: 1px solid #ccc; border-radius: 5px; resize: none; }
+        .pray-form button { padding: 12px 28px; font-size: 16px; color: #fff; background-color: #b80049; border: none; border-radius: 5px; cursor: pointer; transition: 0.3s; }
+        .pray-form button:hover { background-color: #ff6f91; }
+
+        /* TIME & SINCERE */
+        .time { background-color: #fff; padding: 60px 0; text-align: center; width: 100%; }
+        .time p { font-size: 16px; color: #333; margin-bottom: 40px; max-width: 700px; margin-left: auto; margin-right: auto; }
+        .countdown { display: flex; justify-content: center; gap: 15px; flex-wrap: nowrap; }
+        .time-box { background-color: #fff; padding: 14px 18px; border-radius: 8px; min-width: 70px; text-align: center; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; align-items: center; }
+        .time-box span:first-child { display: block; font-size: 22px; font-weight: bold; color: #b80049; }
+        .time-box span:last-child { display: block; font-size: 14px; color: #555; margin-top: 5px; }
+        .sincere { background-color: #fff; padding: 60px 25px; text-align: center; }
+        .sincere h3 { font-size: 22px; color: #b80049; margin-bottom: 10px; }
+        .sincere .hashtag { font-size: 14px; color: #555; margin-bottom: 30px; font-style: italic; }
+        .sincere-photos { display: flex; justify-content: center; gap: 0; }
+        .sincere-photos img { width: 150px; height: 150px; object-fit: cover; filter: grayscale(100%); margin: 0; }
+        .site-footer { background-color: #fff; text-align: center; padding: 40px 20px; font-size: 14px; color: #777; line-height: 1.6; }
+        .site-footer .footer-logo { max-width: 80px; margin-bottom: 20px; }
+        .scroll-down { position: absolute; bottom: 20px; right: 20px; cursor: pointer; font-size: 14px; color: #fff; display: flex; align-items: center; gap: 5px; }
+
+        /* OPEN OVERLAY */
+        .open-overlay { position: fixed; top: 0; right: 0; width: 28.6%; height: 100vh; overflow: hidden; z-index: 999; transition: opacity 0.8s ease, visibility 0.8s ease; opacity: 1; visibility: visible; }
+        .open-overlay.inactive { opacity: 0; visibility: hidden; }
+        .open-bg { position: absolute; inset: 0; background-size: cover; background-position: center; filter: brightness(0.7); }
+        .open-content { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: #fff; background: rgba(0, 0, 0, 0.45); padding: 20px; }
+        .open-content h1 { font-size: 12px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; color: rgba(255, 255, 255, 0.8); }
+        .open-content h2 { font-size: 36px; margin-bottom: 15px; color: #ffd6e0; }
+        .guest-welcome { margin-bottom: 25px; }
+        .guest-welcome p { font-size: 14px; margin-bottom: 5px; color: rgba(255, 255, 255, 0.8); letter-spacing: 1px; }
+        .guest-welcome h3 { font-size: 22px; color: #fff; }
+        .open-content button { background-color: #b80049; border: none; padding: 12px 30px; font-size: 16px; color: #fff; border-radius: 5px; cursor: pointer; transition: 0.3s; }
+
+        /* FLOATING BUTTONS */
+        .floating-buttons { position: fixed; bottom: 20px; left: 20px; display: flex; flex-direction: row; gap: 10px; z-index: 99; opacity: 0; visibility: hidden; transform: translateY(15px); transition: all 0.6s ease; }
+        .floating-buttons.active { opacity: 1; visibility: visible; transform: translateY(0); }
+        .circle-btn { width: 48px; height: 48px; border-radius: 50%; background-color: rgba(255, 255, 255, 0.15); border: 2px solid #fff; color: #fff; font-size: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(4px); transition: 0.3s ease; }
+
+        /* SIDEBAR MENU & GIFT SIDEBAR */
+        .sidebar-overlay, .gift-overlay-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 9; opacity: 0; visibility: hidden; transition: 0.3s ease; }
+        .sidebar-overlay.active, .gift-overlay-bg.active { opacity: 1; visibility: visible; z-index: 1050; }
+        .sidebar { position: fixed; top: 0; right: -28.6%; width: 28.6%; max-width: 350px; height: 100vh; background-color: #faf8f7; box-shadow: -2px 0 10px rgba(0,0,0,0.15); transition: right 0.6s ease; z-index: 100; }
+        .sidebar.active { right: 0; }
+        .sidebar-inner { position: relative; height: 100%; padding: 40px 60px; display: flex; flex-direction: column; }
+        .sidebar-top { text-align: right; }
+        .sidebar-top h3 { font-style: italic; font-weight: 400; font-size: 24px; margin-bottom: 50px; color: #1b1b1b; }
+        .sidebar-top ul { list-style: none; }
+        .sidebar-top li { border-top: 1px solid rgba(0,0,0,0.15); padding: 15px 0; }
+        .sidebar-top li:last-child { border-bottom: 1px solid rgba(0,0,0,0.15); }
+        .sidebar-top a { text-decoration: none; color: #1b1b1b; letter-spacing: 1px; text-transform: uppercase; font-size: 14px; }
+        .sidebar-footer { position: absolute; right: 60px; bottom: 40px; text-align: right; font-size: 10px; color: #777; line-height: 1.5; }
+
+        .gift-sidebar { position: fixed; right: -400px; width: 400px; max-width: 90%; height: 100vh; background-color: #fff; box-shadow: -4px 0 15px rgba(0,0,0,0.2); z-index: 1100; transition: right 0.4s ease; overflow-y: auto; padding: 30px 20px; }
+        .gift-sidebar.active { right: 0; }
+        .gift-sidebar-content h2 { font-size: 24px; margin-bottom: 15px; color: #b80049; }
+        .gift-sidebar-content p { text-align: center; margin-bottom: 20px; line-height: 1.5; }
+        .gift-sidebar-content h3 { font-size: 18px; margin-top: 20px; margin-bottom: 10px; color: #333; background-color: #cbcbcb; height: 30px; width: auto; padding-left: 10px; display: flex; align-items: center;}
+        .gift-details h3 { margin-top: 20px; font-size: 1.1rem; color: #333; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
+        .gift-item { display: flex; justify-content: space-between; align-items: center; background-color: #f8f8f8; padding: 10px; margin-bottom: 10px; border-radius: 5px; }
+        .gift-item button.copy-btn { padding: 5px 12px; font-size: 14px; border: none; border-radius: 5px; background-color: #b80049; color: #fff; cursor: pointer; transition: 0.3s ease; }
+        .gift-sidebar-content label { display: block; margin-top: 15px; margin-bottom: 5px; font-weight: 500; color: #333; }
+        .gift-sidebar-content input, .gift-sidebar-content select, .gift-sidebar-content textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 10px; box-sizing: border-box; }
+        
+        #giftForm { display: flex; flex-direction: column; margin-top: 20px; }
+        #giftForm button[type="submit"] { background: #ff6b81; color: #fff; border: none; padding: 12px; border-radius: 12px; cursor: pointer; font-weight: 600; }
+        
+        .phone-input-dropdown { position: relative; display: flex; align-items: center; gap: 8px; }
+        .selected-country { cursor: pointer; padding: 10px 12px; border: 1px solid #ccc; border-radius: 5px; background: #f5f5f5; user-select: none; margin-bottom: 10px;}
+        .country-list { position: absolute; top: 100%; left: 0; list-style: none; padding: 0; margin: 0; width: 180px; border: 1px solid #ccc; border-radius: 6px; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: none; max-height: 200px; overflow-y: auto; z-index: 10; }
+        .country-list li { padding: 8px 12px; cursor: pointer; }
+        .country-list li:hover { background-color: #f0f0f0; }
+
+        .toast, #confirmationToast { visibility: hidden; min-width: 220px; background-color: #28a745; color: #fff; text-align: center; border-radius: 8px; padding: 12px 20px; position: fixed; z-index: 2000; left: 50%; bottom: 40px; font-size: 15px; opacity: 0; transform: translate(-50%, 20px); transition: opacity 0.4s ease, transform 0.4s ease; pointer-events: none; }
+        .toast.show, #confirmationToast.show { visibility: visible; opacity: 1; transform: translate(-50%, 0); }
+        .gift-sidebar::-webkit-scrollbar { width: 6px; }
+        .gift-sidebar::-webkit-scrollbar-thumb { background-color: rgba(0,0,0,0.2); border-radius: 3px; }
+        
+        @media(max-width:900px) { .left-section { display: none; } .right-section { margin-left: 0; width: 100%; } .overlay-content h2 { font-size: 32px; } .person img, .love-story-header img { width: 240px; height: 240px; } }
+        @media (max-width: 1024px) { .open-overlay, .sidebar { width: 40%; right: -40%; } .gift-sidebar { width: 350px; } }
+        @media (max-width: 768px) { .open-overlay { width: 100%; right: 0; } .floating-buttons { bottom: 15px; left: 15px; gap: 8px; } .sidebar { width: 80%; right: -80%; } .gift-sidebar { width: 100%; right: -100%; } .gift-sidebar.active { right: 0; } }
+        @media (max-width: 480px) { .gift-item { flex-direction: column; align-items: flex-start; } .gift-item button.copy-btn { margin-top: 8px; width: 100%; } }
+    </style>
 </head>
+
 <body>
-
-  <div class="container">
-    <h2>Undangan Pernikahan</h2>
-    <!-- Teks sapaan tamu otomatis -->
-    <p>Kepada Yth: <br><strong id="nama-tamu" style="font-size: 1.5em; color: #d3a17e;">Tamu Undangan</strong></p>
+    <!-- LEFT -->
+    <div class="left-section">
+        <div class="content">
+            <h1>WEDDING ANNOUNCEMENT</h1>
+            <h2>Tiffany & Jared</h2>
+            <p>"Aku ingin mencintaimu dengan sederhana; dengan kata yang tak sempat diucapkan kayu kepada api yang menjadikannya abu..."</p>
+        </div>
+    </div>
     
-    <p>Kami mengundang Bapak/Ibu/Saudara/i untuk hadir di hari bahagia kami.</p>
+    <!-- RIGHT -->
+    <div class="right-section">
+        <!-- OPEN OVERLAY -->
+        <div class="open-overlay active">
+            <div class="open-bg" style="background-image:url('https://invitato.net/test-product-engineer/static/1-2b43ea516254cdff99c88a7fce90ae98.jpg')"></div>
+            <div class="open-content">
+                <h1>WEDDING ANNOUNCEMENT</h1>
+                <h2>Tiffany & Jared</h2>
+                <div class="guest-welcome">
+                    <p>Dear,</p>
+                    <h3 id="nama-tamu-cover">Tamu Undangan</h3>
+                </div>
+                <button id="openBtn">Open Invitation</button>
+            </div>
+        </div>
+        
+        <!-- AUDIO & FLOATING -->
+        <audio id="bgMusic" loop><source src="asset/music/The Way You Look At Me - Christian Bautista (Saxophone Cover) Saxserenade.mp3" type="audio/mpeg"></audio>
+        <div class="floating-buttons"><button id="menuBtn" class="circle-btn"><span>&#9776;</span></button><button id="musicBtn" class="circle-btn"><span>🎵</span></button></div>
+        
+        <!-- HEADER OVERLAY -->
+        <section class="overlay-header">
+            <div class="overlay-bg active" style="background-image:url('https://invitato.net/test-product-engineer/static/1-2b43ea516254cdff99c88a7fce90ae98.jpg')"></div>
+            <div class="overlay-content">
+                <h1>WEDDING ANNOUNCEMENT</h1>
+                <h2>Tiffany & Jared</h2>
+                <p>#TImetoshaRE</p>
+            </div>
+            <div class="scroll-down" onclick="scrollToContent()"><strong>Scroll to Begin</strong>&#x2193;</div>
+        </section>
 
-    <hr style="margin: 30px 0;">
+        <!-- CONTENT -->
+        <section class="content-section">
+            <div class="wedding-header">
+                <h4>DEAR MR-MRS-MS,</h4>
+                <h2 id="nama-tamu-content" style="color: #b80049; margin-bottom: 5px;">Family & Friends</h2>
+                <p style="margin-top: 10px;">Welcome to Tiffany & Jared’s Wedding Website</p>
+                <span>Together with joyful hearts and the grace of God, we joyfully announce the upcoming of our marriage.</span>
+            </div>
+            
+            <div class="carousel-container">
+                <div class="carousel-track">
+                    <div class="carousel-slide"><img src="https://invitato.net/test-product-engineer/static/4-3943e72cf6bb4fe685c5917ea1d1cac4.jpg"></div>
+                    <div class="carousel-slide"><img src="https://invitato.net/test-product-engineer/static/5-ffa38a07e15195800fbcc590cb50b2d0.jpg"></div>
+                    <div class="carousel-slide"><img src="https://invitato.net/test-product-engineer/static/1-2b43ea516254cdff99c88a7fce90ae98.jpg"></div>
+                </div>
+            </div>
+            <div class="carousel-buttons"><button class="carousel-prev">&#8592;</button><button class="carousel-next">&#8594;</button></div>
+        </section>
 
-    <h3>Konfirmasi Kehadiran (RSVP)</h3>
+        <!-- Meet -->
+        <section class="meet" id="meet">
+            <h2>MEET THE BRIDE & GROOM</h2>
+            <div class="meet-container">
+                <div class="person"><img src="https://invitato.net/test-product-engineer/static/4-3943e72cf6bb4fe685c5917ea1d1cac4.jpg"></div>
+                <div class="bride"><h3>Tiffany Smith</h3><div class="handle">@tiffanyinvitato</div><div class="desc">The Daughter of<br>Mr. Smith & Mrs. Bellyna</div></div>
+                <div class="groom"><h3>Robin Jared Lucas</h3><div class="handle">@jaredinvitato</div><div class="desc">The Son of<br>Mr. Lucas & Mrs. Anita</div></div>
+            </div>
+        </section>
+
+        <!-- Quote -->
+        <section class="quote">
+            <p>“And of His signs is that He created for you from yourselves mates that you may find tranquility in them...”</p><span>- Q.S. Ar-Rum: 21</span>
+        </section>
+
+        <!-- Place -->
+        <section class="place">
+            <h2>PLACE & TIME</h2>
+            <p>Holy Matrimony<br>Date: Monday, 26 February 2024<br>Time: 10.00 WIB</p>
+        </section>
+
+        <!-- Gift & Streaming -->
+        <section class="gift" id="gift"><div class="gift-overlay"><h2>Wedding Gift</h2><button id="sendGiftBtn">Send Gift</button></div></section>
+        <section class="streaming" id="streaming"><div class="streaming-overlay"><h2>Live Streaming</h2><button onclick="window.open('https://www.youtube.com/watch?v=ApX0LaS6gSM', '_blank')">Open via YouTube</button></div></section>
+
+        <!-- Love Story -->
+        <section class="love-story">
+            <div class="love-story-header"><h2>Tiffany & Jared are</h2><h3>Getting Married!</h3><img src="https://invitato.net/test-product-engineer/static/4-3943e72cf6bb4fe685c5917ea1d1cac4.jpg"></div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- PRAYERS & WISHES FORM (RSVP) -->
+        <!-- ============================================== -->
+        <section class="pray">
+            <h2>Prayers & Wishes</h2>
+            <p>Please leave your sincere prayers and wishes to us and our family:</p>
+            
+            <form class="pray-form" id="prayForm" name="Wishes">
+                <input type="text" name="name" class="auto-nama" placeholder="Name" required>
+                <!-- INI KOLOM NOMOR WA UNTUK MASUK KE KOLOM A -->
+                <input type="number" name="no" placeholder="No WhatsApp" required>
+                <input type="text" name="relationship" placeholder="The Relationship" required>
+                <textarea name="message" placeholder="Prayers & Wishes" rows="4" required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+
+        <!-- Time & Sincere -->
+        <section class="time">
+            <div class="countdown">
+                <div class="time-box"><span id="days">0</span><span>Days</span></div>
+                <div class="time-box"><span id="hours">0</span><span>Hours</span></div>
+                <div class="time-box"><span id="minutes">0</span><span>Minutes</span></div>
+                <div class="time-box"><span id="seconds">0</span><span>Seconds</span></div>
+            </div>
+        </section>
+        
+        <section class="sincere">
+            <p>OUR SINCERE,</p><h3>Tiffany & Jared</h3><div class="hashtag">#TImetoshaRE</div>
+            <div class="sincere-photos">
+                <img src="https://invitato.net/test-product-engineer/static/2-9fafa4bf7091b5207804ffe51f518939.jpg">
+                <img src="https://invitato.net/test-product-engineer/static/3-8ac38da1cdc0fa503b46859811696a13.jpg">
+            </div>
+        </section>
+
+        <footer class="site-footer"><img src="asset/img/logo AY.png" class="footer-logo"><p>© 2025 yaasin36. All Rights Reserved</p></footer>
+    </div>
+
+    <!-- SIDEBAR MENU -->
+    <div class="sidebar" id="sidebarMenu">
+        <div class="sidebar-inner">
+            <div class="sidebar-top">
+                <h3>#TMetoshaRE</h3>
+                <ul><li><a href="#meet">Bride & Groom</a></li><li><a href="#streaming">Live Streaming</a></li><li><a href="#gift">Wedding Gift</a></li></ul>
+            </div>
+        </div>
+    </div>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- SIDEBAR GIFT -->
+    <div class="gift-sidebar" id="giftSidebar">
+        <div class="gift-sidebar-content">
+            <p>For beloved ones who may want to show<br>your sincere love by sending gift...</p>
+
+            <div class="gift-details">
+                <h3>Bank Transfer</h3>
+                <div class="gift-item">
+                    <p>01234567 - Tifanny Jared</p>
+                    <button class="copy-btn" data-copy="01234567 - Tifanny Jared">Copy</button>
+                </div>
+            </div>
+
+            <h3>Confirmation</h3>
+            <!-- FORM CONFIRMATION GIFT -->
+            <form id="giftForm" name="Confirmation">
+                <label>Name</label>
+                <input type="text" name="name" class="auto-nama" placeholder="Your Name" required>
+
+                <label>Phone</label>
+                <div class="phone-input-dropdown">
+                    <div class="selected-country">+62</div>
+                    <ul class="country-list">
+                        <li data-code="+62">🇮🇩 Indonesia</li>
+                        <li data-code="+1">🇺🇸 USA</li>
+                    </ul>
+                    <input type="tel" id="phone" name="phone" placeholder="Your phone number" pattern="[0-9]*" required>
+                </div>
+
+                <label>Wedding Gift Type</label>
+                <select name="giftType" required>
+                    <option value="">-- Select --</option>
+                    <option value="bank transfer">Bank Transfer</option>
+                    <option value="gift">Gift</option>
+                </select>
+
+                <label>Add Notes</label>
+                <textarea name="notes" rows="3" placeholder="Your message..."></textarea>
+                <button type="submit">Send Confirmation</button>
+            </form>
+        </div>
+    </div>
     
-    <form id="rsvp-form" name="submit-to-google-sheet">
-      <div class="form-group">
-        <label>Nama Anda:</label>
-        <input type="text" id="nama" name="Nama Tamu" required>
-      </div>
+    <div class="gift-overlay-bg" id="giftOverlay"></div>
+    <div id="toast" class="toast"></div>
+    <div id="confirmationToast" class="toast"></div>
 
-      <div class="form-group">
-        <label>Apakah Anda akan hadir?</label>
-        <select name="Kehadiran" required>
-          <option value="" disabled selected>Pilih Kehadiran</option>
-          <option value="Hadir">Hadir</option>
-          <option value="Tidak Hadir">Mohon Maaf Tidak Bisa Hadir</option>
-        </select>
-      </div>
+    <script>
+        // ==============================================================
+        // 1. INI URL WEB APP GOOGLE APPS SCRIPT ANDA
+        // ==============================================================
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxHorD-s3XrGnd3dC6i-K2Sg5Z1gLedIY0pMkO7_2FAMLC8sS5h872y2FPPOqC43Sx8/exec';
+        
+        // 2. LOGIKA URL PARAMETER (?to=Nama)
+        const urlParams = new URLSearchParams(window.location.search);
+        const namaTamu = urlParams.get('to');
+        if (namaTamu) {
+            const namaCover = document.getElementById('nama-tamu-cover');
+            if (namaCover) namaCover.innerText = namaTamu;
+            
+            const namaContent = document.getElementById('nama-tamu-content');
+            if (namaContent) namaContent.innerText = namaTamu;
+            
+            document.querySelectorAll('.auto-nama').forEach(input => {
+                input.value = namaTamu;
+            });
+        }
+        
+        // 3. UI INTERACTIONS
+        const openBtn = document.getElementById('openBtn');
+        const overlay = document.querySelector('.open-overlay');
+        const bgMusic = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
+        const floatingButtons = document.querySelector('.floating-buttons');
+        let isPlaying = false;
 
-      <div class="form-group">
-        <label>Ucapan & Doa:</label>
-        <textarea name="Pesan" rows="4" required></textarea>
-      </div>
-
-      <button type="submit" id="btn-kirim">Kirim RSVP</button>
-      
-      <div id="loading" style="display:none; color: blue; margin-top: 10px;">Mengirim data...</div>
-      <div id="sukses" style="display:none; color: green; margin-top: 10px;">Terima kasih atas konfirmasi dan doanya!</div>
-    </form>
-  </div>
-
-  <script>
-    // 1. Logika untuk menangkap nama dari URL (misal: ?to=Budi)
-    const urlParams = new URLSearchParams(window.location.search);
-    const namaTamu = urlParams.get('to');
-    
-    if (namaTamu) {
-      document.getElementById('nama-tamu').innerText = namaTamu;
-      document.getElementById('nama').value = namaTamu; // Mengisi kolom nama di form secara otomatis
-    }
-
-    // 2. Logika untuk mengirim data ke Google Sheets
-    // GANTI URL DI BAWAH INI DENGAN URL WEB APP MILIK ANDA DARI TAHAP 2
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxHorD-s3XrGnd3dC6i-K2Sg5Z1gLedIY0pMkO7_2FAMLC8sS5h872y2FPPOqC43Sx8/exec';
-    
-    const form = document.forms['submit-to-google-sheet'];
-    const btnKirim = document.getElementById('btn-kirim');
-    const loading = document.getElementById('loading');
-    const sukses = document.getElementById('sukses');
-
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      
-      btnKirim.style.display = 'none';
-      loading.style.display = 'block';
-
-      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-        .then(response => {
-          loading.style.display = 'none';
-          sukses.style.display = 'block';
-          form.reset();
-          setTimeout(() => { sukses.style.display = 'none'; btnKirim.style.display = 'block'; }, 5000);
-        })
-        .catch(error => {
-          loading.style.display = 'none';
-          btnKirim.style.display = 'block';
-          alert('Error! Data gagal dikirim.');
+        openBtn.addEventListener('click', () => {
+            overlay.classList.add('inactive');
+            setTimeout(() => {
+                document.querySelector('.overlay-header').scrollIntoView({ behavior: 'smooth' });
+                floatingButtons.classList.add('active');
+                bgMusic.play().then(() => {
+                    isPlaying = true;
+                    musicBtn.innerHTML = '<span>🔊</span>';
+                }).catch(() => {});
+            }, 800);
         });
-    });
-  </script>
+
+        musicBtn.addEventListener('click', () => {
+            if (isPlaying) { bgMusic.pause(); musicBtn.innerHTML = '<span>🔇</span>'; }
+            else { bgMusic.play(); musicBtn.innerHTML = '<span>🔊</span>'; }
+            isPlaying = !isPlaying;
+        });
+
+        const menuBtn = document.getElementById('menuBtn');
+        const sidebar = document.getElementById('sidebarMenu');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        menuBtn.addEventListener('click', () => { sidebar.classList.toggle('active'); sidebarOverlay.classList.toggle('active'); });
+        sidebarOverlay.addEventListener('click', () => { sidebar.classList.remove('active'); sidebarOverlay.classList.remove('active'); });
+
+        const slides = document.querySelectorAll('.carousel-slide');
+        let currentIndex = 0;
+        function updateCarousel() {
+            slides.forEach(slide => slide.classList.remove('prev', 'active', 'next'));
+            slides[(currentIndex - 1 + slides.length) % slides.length].classList.add('prev');
+            slides[currentIndex].classList.add('active');
+            slides[(currentIndex + 1) % slides.length].classList.add('next');
+        }
+        document.querySelector('.carousel-next').addEventListener('click', () => { currentIndex = (currentIndex + 1) % slides.length; updateCarousel(); });
+        document.querySelector('.carousel-prev').addEventListener('click', () => { currentIndex = (currentIndex - 1 + slides.length) % slides.length; updateCarousel(); });
+        updateCarousel();
+
+        const weddingDate = new Date("February 26, 2027 10:00:00").getTime();
+        setInterval(() => {
+            const distance = weddingDate - new Date().getTime();
+            if (distance < 0) return;
+            document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
+            document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000);
+        }, 1000);
+
+        function scrollToContent() { document.querySelector('.content-section').scrollIntoView({ behavior: 'smooth' }); }
+        document.querySelectorAll('.sidebar a').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                document.querySelector(link.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+                sidebar.classList.remove('active'); sidebarOverlay.classList.remove('active');
+            });
+        });
+
+        const sendGiftBtn = document.getElementById('sendGiftBtn');
+        const giftSidebar = document.getElementById('giftSidebar');
+        const giftOverlay = document.getElementById('giftOverlay');
+        sendGiftBtn.addEventListener('click', () => { giftSidebar.classList.add('active'); giftOverlay.classList.add('active'); });
+        giftOverlay.addEventListener('click', () => { giftSidebar.classList.remove('active'); giftOverlay.classList.remove('active'); });
+
+        const copyButtons = document.querySelectorAll('.copy-btn');
+        const toast = document.getElementById('toast');
+        copyButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                navigator.clipboard.writeText(btn.dataset.copy).then(() => {
+                    toast.textContent = 'Copied: ' + btn.dataset.copy; toast.classList.add('show');
+                    setTimeout(() => toast.classList.remove('show'), 2000);
+                });
+            });
+        });
+
+        const selectedCountry = document.querySelector('.selected-country');
+        const countryList = document.querySelector('.country-list');
+        selectedCountry.addEventListener('click', () => countryList.style.display = countryList.style.display === 'block' ? 'none' : 'block');
+        countryList.querySelectorAll('li').forEach(li => {
+            li.addEventListener('click', () => { selectedCountry.textContent = li.dataset.code; countryList.style.display = 'none'; });
+        });
+
+        // 4. SUBMIT FORM KE GOOGLE SHEETS
+        const confirmationToast = document.getElementById('confirmationToast');
+        
+        // Form RSVP (Prayers & Wishes)
+        const prayForm = document.getElementById('prayForm');
+        if (prayForm) {
+            prayForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const btnSubmit = prayForm.querySelector('button[type="submit"]');
+                const originalText = btnSubmit.innerHTML;
+                btnSubmit.innerHTML = 'Sending...';
+                btnSubmit.disabled = true;
+
+                fetch(scriptURL, { method: 'POST', body: new FormData(prayForm)})
+                    .then(response => {
+                        confirmationToast.textContent = 'Thank you for your wishes! ✨';
+                        confirmationToast.classList.add('show');
+                        prayForm.reset();
+                        setTimeout(() => confirmationToast.classList.remove('show'), 3000);
+                    })
+                    .catch(error => alert('Oops! Something went wrong.'))
+                    .finally(() => { btnSubmit.innerHTML = originalText; btnSubmit.disabled = false; });
+            });
+        }
+
+        // Form Konfirmasi Kado (Gift)
+        const giftForm = document.getElementById('giftForm');
+        if (giftForm) {
+            giftForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const btnSubmit = giftForm.querySelector('button[type="submit"]');
+                const originalText = btnSubmit.innerHTML;
+                btnSubmit.innerHTML = 'Sending...';
+                btnSubmit.disabled = true;
+
+                const formData = new FormData(giftForm);
+                formData.set('phone', selectedCountry.textContent + document.getElementById('phone').value);
+
+                fetch(scriptURL, { method: 'POST', body: formData })
+                    .then(response => {
+                        giftForm.reset();
+                        selectedCountry.textContent = '+62';
+                        confirmationToast.textContent = 'Thank you! Confirmation sent. 💌';
+                        confirmationToast.classList.add('show');
+                        setTimeout(() => { giftSidebar.classList.remove('active'); giftOverlay.classList.remove('active'); }, 1000);
+                        setTimeout(() => confirmationToast.classList.remove('show'), 3000);
+                    })
+                    .catch(error => alert('Error sending confirmation.'))
+                    .finally(() => { btnSubmit.innerHTML = originalText; btnSubmit.disabled = false; });
+            });
+        }
+    </script>
 </body>
 </html>
